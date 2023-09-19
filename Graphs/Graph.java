@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 
 public class Graph {
     private static class Vertex{
@@ -81,29 +79,84 @@ public class Graph {
 
     //===========================GRAPH TRAVERSALS========================================
 
-    private static class Pair{
+    private class Pair{
         String name;
-        boolean value;
-
-        public Pair(String name){
-            this.name = name;
-        }
-
+        Vertex vtx;
+        String psf; // path so far
     }
     public void dfs(String source){
+
+        HashMap<String,Boolean> isVisited = new HashMap<>();
         ArrayList<String> keys = new ArrayList<>(vertices.keySet());
-        ArrayList<Pair> isVisited = new ArrayList<>();
         for(String key : keys){
-            Pair p =new Pair(key);
-            isVisited.add(p);
+            if(!isVisited.containsKey(key)){
+                isVisited.put(key,false);
+            }
         }
 
-        Stack<String> s = new Stack<>();
-        s.push(source);
+        Stack<Pair> s = new Stack<>();
+        Pair p = new Pair();
+        p.name = source;
+        p.psf = source ;
+        s.push(p);
         while(!s.isEmpty()){
-            System.out.println();
+            Pair rp = s.pop();
+            if(isVisited.get(rp.name)){
+                continue;
+            }
+            isVisited.put(rp.name,true);
+            System.out.println(rp.name + " via " + rp.psf);
+            Vertex rp_vtx = vertices.get(rp.name);
+            ArrayList<String> ngbr = new ArrayList<>(rp_vtx.ngbrs.keySet());
+            for(String nbr : ngbr){
+                if(isVisited.get(nbr)){
+                    continue;
+                }
+                Pair np = new Pair();   // np --> newPair
+                np.name = nbr;
+                np.psf = rp.psf + " " + nbr;
+                s.push(np);
+            }
         }
     }
 
+    public void bfs(String source){
+
+        HashMap<String,Boolean> isVisited = new HashMap<>();
+        ArrayList<String> keys = new ArrayList<>(vertices.keySet());
+        for(String key : keys){
+            if(!isVisited.containsKey(key)){
+                isVisited.put(key,false);
+            }
+        }
+
+        Queue<Pair> q = new LinkedList<>();
+
+        Pair p = new Pair();
+        p.name = source;
+        p.psf = source;
+        q.add(p);
+
+        while(!q.isEmpty()){
+            Pair rp = q.remove();
+            if(isVisited.get(rp.name)){
+                continue;
+            }
+
+            isVisited.put(rp.name,true);
+            System.out.println(rp.name + " via " + rp.psf);
+            Vertex rp_vtx = vertices.get(rp.name);
+            ArrayList<String> ngbr = new ArrayList<>(rp_vtx.ngbrs.keySet());
+            for(String nbr : ngbr){
+                if(isVisited.get(nbr)){
+                    continue;
+                }
+                Pair np = new Pair();
+                np.name = nbr;
+                np.psf = rp.psf + " " + nbr;
+                q.add(np);
+            }
+        }
+    }
 
 }
