@@ -78,32 +78,5 @@ public class Graph {
        }
        System.out.println("=======================================");
     }
-
-    //===========================GRAPH TRAVERSALS========================================
-
-    private static class Pair{
-        String name;
-        boolean value;
-
-        public Pair(String name){
-            this.name = name;
-        }
-
-    }
-    public void dfs(String source){
-        ArrayList<String> keys = new ArrayList<>(vertices.keySet());
-        ArrayList<Pair> isVisited = new ArrayList<>();
-        for(String key : keys){
-            Pair p =new Pair(key);
-            isVisited.add(p);
-        }
-
-        Stack<String> s = new Stack<>();
-        s.push(source);
-        while(!s.isEmpty()){
-            System.out.println();
-        }
-    }
-
-
+    
 }
